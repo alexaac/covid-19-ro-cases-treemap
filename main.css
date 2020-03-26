@@ -20,6 +20,7 @@ body {
 
 .wrapper {
     margin: 0 20;
+    max-width: 1200px;
 }
 
 svg.chart-group {
@@ -28,11 +29,12 @@ svg.chart-group {
     margin-left: auto;
     margin-right: auto;
     max-width: 1000px;
-    text-align: center;
 }
 
 tooltip_div.tooltip {
     position: absolute;
+    top: 100px;
+    left: 100px;
     -moz-border-radius: 5px;
     border-radius: 5px;
     background: white;
@@ -40,9 +42,12 @@ tooltip_div.tooltip {
     opacity: .9;
     color: #222;
     padding: 10px;
+    min-width: 10.75vmin;
     font-size: 0.7em;
-    line-height: 17pt;
+    line-height: 20pt;
     font-family:  "EB Garamond", serif;
+    visibility: visible;
+    pointer-events: none;
 }
 
 text, tspan {

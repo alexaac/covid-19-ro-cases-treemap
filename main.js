@@ -15,20 +15,13 @@ const tooltip_div = d3.select("body")
 const format = d3.format(",d");
 
 const highlight = (d) => {
-    let left = d3.event.pageX -20;
-    let top = d3.event.pageY + 20;
- 
-    if (window.innerWidth - left < 150){
-      left = d3.event.pageX - 40;
-    }
-
     tooltip_div.transition()
     .duration(200)
     .style("opacity", .9);
 
     tooltip_div.html(tooltipHTML(d))
-        .style("left", left + 'px')
-        .style("top", top + 'px')
+        .style("left", (d3.event.pageX/1.2) + "px")
+        .style("top", (d3.event.pageY/1.2) + "px")
         .style("display", null);
 };
 
