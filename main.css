@@ -20,7 +20,6 @@ body {
 
 .wrapper {
     margin: 0 20;
-    text-align: center;
 }
 
 svg.chart-group {
@@ -29,6 +28,7 @@ svg.chart-group {
     margin-left: auto;
     margin-right: auto;
     max-width: 1000px;
+    text-align: center;
 }
 
 tooltip_div.tooltip {
