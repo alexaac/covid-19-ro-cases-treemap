@@ -26,6 +26,7 @@ const highlight = (d) => {
 };
 
 const tooltipHTML = (d) => {
+    if (d.data.county === 'NECUNOSCUT') d.data.county = 'JUDEȚ NECUNOSCUT';
     return "<b>" + d.data.county + "</b><br />" +
         "Confirmate: " + d.data.total_county + "<br />" +
         "Vindecări: " + d.data.total_healed + "<br />" +
@@ -110,7 +111,11 @@ const unHighlight = () => {
         leaf.append("text")
             .attr("clip-path", d => `url(#clip-${d.data.county_code})`)
             .selectAll("tspan")
-            .data(d => d.data.county_code.split(/(?=[A-Z][^A-Z])/g).concat(format(d.data.total_county)))
+            .data(d => {
+                    let thisCounty = d.data.county_code;
+                    if (thisCounty === 'NA') thisCounty = 'JUDEȚ NECUNOSCUT';
+                    return thisCounty.split(/(?=[A-Z][^A-Z])/g).concat(format(d.data.total_county));
+                })
             .join("tspan")
                 .attr("x", 3)
                 .attr("y", (d, i, nodes) => `${(i === nodes.length - 1) * 0.3 + 1.1 + i * 0.9}em`)
