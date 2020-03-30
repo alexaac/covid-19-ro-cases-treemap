@@ -1,7 +1,7 @@
 // set the dimensions and margins of the graph
 const margin = {top: 50, right: 50, bottom: 50, left: 50},
-    width = 1250 - margin.left - margin.right,
-    height = 1000 - margin.top - margin.bottom,
+    width = 1400 - margin.left - margin.right,
+    height = 1100 - margin.top - margin.bottom,
     svg_width = width + margin.left + margin.right,
     svg_height = height + margin.top + margin.bottom;
 
@@ -26,13 +26,13 @@ const highlight = (d) => {
 };
 
 const tooltipHTML = (d) => {
-    if (d.data.county === 'NECUNOSCUT') d.data.county = 'JUDEȚ NECUNOSCUT';
+    if (d.data.county === 'JUDEȚ NECUNOSCUT') d.data.county = 'JUDEȚ NECUNOSCUT';
     return "<b>" + d.data.county + "</b><br />" +
-        "Confirmate: " + d.data.total_county + "<br />" +
-        "Vindecări: " + d.data.total_healed + "<br />" +
-        "Decese: " + d.data.total_dead;
+        "Confirmate: " + d.data.total_case + "<br />" +
+        "Vindecări: " + ( d.data.total_healed === null ? 0 : d.data.total_healed ) + "<br />" +
+        "Decese: " + ( d.data.total_dead === null ? 0 : d.data.total_dead );
 
-    return `${d.ancestors().reverse().map(d => d.data.county_code).join("/")}</br>${format(d.data.total_county)} cases`;
+    // return `${d.ancestors().reverse().map(d => d.data.county_code).join("/")}</br>${format(d.data.total_case)} cases`;
 };
 
 const unHighlight = () => {
@@ -45,7 +45,7 @@ const unHighlight = () => {
 (() => {
 
     // d3.json("cases_relations.json").then( data => { // dummy data
-    d3.json("https://covid19.geo-spatial.org/api/dashboard/getCasesByCounty").then( data => {
+    d3.json("https://covid19.geo-spatial.org/api/dashboard/v2/getCasesByCounty").then( data => {
 
         nodes = data.data.data;
 
@@ -83,11 +83,11 @@ const unHighlight = () => {
                 .eachBefore( d => { 
                     return d.data.county_code = (d.parent && d.parent.data.county_code !== "undefined" ? d.parent.data.county_code + "." : "") + d.data.county_code; 
                 })
-                .sum(d => d.total_county)
-                .sort((a, b) => b.total_county - a.total_county))
+                .sum(d => d.total_case)
+                .sort((a, b) => b.total_case - a.total_case))
 
         const root = treemap(data);
-
+        console.log(root);
         const leaf = svg.selectAll("g")
             .data(root.leaves())
             .join("g")
@@ -114,7 +114,7 @@ const unHighlight = () => {
             .data(d => {
                     let thisCounty = d.data.county_code;
                     if (thisCounty === 'NA') thisCounty = 'JUDEȚ NECUNOSCUT';
-                    return thisCounty.split(/(?=[A-Z][^A-Z])/g).concat(format(d.data.total_county));
+                    return thisCounty.split(/(?=[A-Z][^A-Z])/g).concat(format(d.data.total_case));
                 })
             .join("tspan")
                 .attr("x", 3)
