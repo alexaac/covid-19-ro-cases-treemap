@@ -129,7 +129,7 @@ const unHighlight = () => {
             .attr("text-anchor", "middle")
             .style("font-size", "16px")
             .style("text-decoration", "underline")
-            .text("Repartiția cazurilor pe județele de confirmare");
+            .text("Repartiția cazurilor pe județe");
     };
 
 }).call(this);
