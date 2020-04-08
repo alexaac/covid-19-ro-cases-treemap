@@ -41,6 +41,18 @@ const unHighlight = () => {
         .style("opacity", 0);
 };
 
+// https://medialab.github.io/iwanthue/
+// hcl[0]>=0 && hcl[0]<=340
+//     && hcl[1]>=30 && hcl[1]<=80
+//     && hcl[2]>=35 && hcl[2]<=100
+const countyColors = [
+ "#e4588c", "#35d394", "#ba1ea8", "#4caf1c", "#1848ca", "#aad42b", "#9b85ff", "#068400", "#8b2487", "#97ff8b", "#d60042", "#00ae87", "#f94740", "#48d3ff", "#d17300", "#5ea2ff", "#cfb100", "#53498f", "#ffe353", "#325383", "#86a700", "#ff9eeb", "#007f30", "#d9b6ff", "#3b5c12", "#89c2ff", "#964000", "#00bfbb", "#ff6f54", "#01aac6", "#ffb65d", "#008857", "#ff8e90", "#145f36", "#952e31", "#fffea6", "#8e3440", "#5a936f", "#883d0c", "#ffaf81", "#82401e", "#b09764", "#855b00"
+];
+const counties = [
+ "ALBA", "ARAD", "ARGEȘ", "BACĂU", "BIHOR", "BISTRIȚA-NĂSĂUD", "BOTOȘANI", "BRAȘOV", "BRĂILA", "BUCUREȘTI", "BUZĂU", "CARAȘ-SEVERIN", "CLUJ", "CONSTANȚA", "COVASNA", "CĂLĂRAȘI", "DOLJ", "DÂMBOVIȚA", "GALAȚI", "GIURGIU", "GORJ", "HARGHITA", "HUNEDOARA", "IALOMIȚA", "IAȘI", "ILFOV", "JUDEȚ NECUNOSCUT", "MARAMUREȘ", "MEHEDINȚI", "MUREȘ", "NEAMȚ", "OLT", "PRAHOVA", "SATU MARE", "SIBIU", "SUCEAVA", "SĂLAJ", "TELEORMAN", "TIMIȘ", "TULCEA", "VASLUI", "VRANCEA", "VÂLCEA"
+];
+const countyColor = d3.scaleOrdinal(countyColors).domain(counties);
+
 
 (() => {
 
@@ -53,9 +65,6 @@ const unHighlight = () => {
     });
 
     const changeView = (nodes) => {
-
-        const counties = Array.from(new Set(nodes.map(d => d.county_code)));
-        const color = d3.scaleOrdinal(d3.schemePaired).domain(counties);
 
         const svg = d3.select("#chart")
             .append("svg")
@@ -87,7 +96,7 @@ const unHighlight = () => {
                 .sort((a, b) => b.total_case - a.total_case))
 
         const root = treemap(data);
-        console.log(root);
+
         const leaf = svg.selectAll("g")
             .data(root.leaves())
             .join("g")
@@ -96,7 +105,7 @@ const unHighlight = () => {
         leaf.append("rect")
             .attr("id", d => d.data.county_code)
             .attr("class", "districts")
-            .attr("fill", d => { while (d.depth > 1) d = d.parent; return color(d.data.county_code); })
+            .attr("fill", d => { while (d.depth > 1) d = d.parent; return countyColor(d.data.county); })
             .attr("fill-opacity", 0.6)
             .attr("width", d => d.x1 - d.x0)
             .attr("height", d => d.y1 - d.y0)
