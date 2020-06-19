@@ -132,13 +132,13 @@ const countyColor = d3.scaleOrdinal(countyColors).domain(counties);
                 .text(d => d);
 
         /******************************** Title ********************************/
-        svg.append("text")
-            .attr("x", (width / 2))
-            .attr("y", -15)
-            .attr("text-anchor", "middle")
-            .style("font-size", "16px")
-            .style("text-decoration", "underline")
-            .text("Repartiția cazurilor pe județe");
+        // svg.append("text")
+        //     .attr("x", (width / 2))
+        //     .attr("y", -15)
+        //     .attr("text-anchor", "middle")
+        //     .style("font-size", "16px")
+        //     .style("text-decoration", "underline")
+        //     .text("Repartiția cazurilor pe județe");
     };
 
 }).call(this);
